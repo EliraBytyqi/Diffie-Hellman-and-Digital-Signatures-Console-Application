@@ -1,11 +1,11 @@
-package utils;
+package crypto;
 
 import java.security.*;
 import java.util.Base64;
 
 public class SignatureUtil {
 
-    // Generate RSA Key Pair
+    // Gjenero Çiftin e Çelësave RSA
     public static KeyPair generateKeyPair() throws Exception {
 
         KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
@@ -15,7 +15,7 @@ public class SignatureUtil {
         return keyGen.generateKeyPair();
     }
 
-    // Sign Message
+    // Nënshkruaj Mesazhin
     public static String signMessage(String message, PrivateKey privateKey) throws Exception {
 
         Signature signature = Signature.getInstance("SHA256withRSA");
@@ -29,7 +29,7 @@ public class SignatureUtil {
         return Base64.getEncoder().encodeToString(signedBytes);
     }
 
-    // Verify Signature
+    // Verifiko Nënshkrimin
     public static boolean verifySignature(
             String message,
             String signatureText,
@@ -47,12 +47,12 @@ public class SignatureUtil {
         return signature.verify(signatureBytes);
     }
 
-    // MAIN TEST
+    // TESTIM KRYESOR
     public static void main(String[] args) {
 
         try {
 
-            // Generate Keys
+            // Gjenero Çelësat
             KeyPair pair = generateKeyPair();
 
             PrivateKey privateKey = pair.getPrivate();
@@ -60,7 +60,7 @@ public class SignatureUtil {
 
             String message = "Pershendetje kjo eshte nje prove!";
 
-            // HASHING
+            // HASHIMI
             String hash = HashUtil.sha256(message);
 
             System.out.println("Original Message:");
@@ -69,13 +69,13 @@ public class SignatureUtil {
             System.out.println("\nSHA-256 Hash:");
             System.out.println(hash);
 
-            // SIGNING
+            // NËNSHKRIMI
             String digitalSignature = signMessage(message, privateKey);
 
             System.out.println("\nDigital Signature:");
             System.out.println(digitalSignature);
 
-            // VERIFY
+            // VERIFIKO
             boolean isVerified = verifySignature(
                     message,
                     digitalSignature,
@@ -85,7 +85,7 @@ public class SignatureUtil {
             System.out.println("\nSignature Verified:");
             System.out.println(isVerified);
 
-            // Integrity Check
+            // Kontroll Integriteti
             String modifiedMessage = "Mesazh i ndryshuar";
 
             boolean integrityCheck = verifySignature(
